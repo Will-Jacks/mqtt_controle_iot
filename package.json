@@ -2,7 +2,6 @@
   "name": "my-app",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://Will-Jacks.github.io/mqtt_controle_iot",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "gh-pages": "^4.0.0",
     "mqtt": "^4.3.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
