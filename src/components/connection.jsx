@@ -1,14 +1,12 @@
-import Connector from './connection'
+import '../App.css'
 import React from 'react'
 
 import mqtt from 'mqtt/dist/mqtt'
 import { useEffect } from 'react'
 
-import './btnStyle.css'
-
 const clientId = 'mqttjs_' + Math.random().toString(16).substr(2, 8)
 
-export default function MandaMQTT() {
+export default function Connector() {
   const [connectionStatus, setConnectionStatus] = React.useState(false)
   const [messages, setMessages] = React.useState()
 
@@ -35,10 +33,13 @@ export default function MandaMQTT() {
     
     console.log('Connecting mqtt client')
     const client = mqtt.connect(host, options)
-    
+    let cont = 0;
     client.on('connect', () => {
+      
       setConnectionStatus(true)
-      client.subscribe('WILL/teste')
+      client.subscribe(topico)
+      if(cont <= 0){client.publish('WILL/teste','Conectado com sucesso!');cont++}//Se o contador for <=0 ele publica conectado com sucesso
+
     })
 
     client.on('message', (topic, payload, packet) => {
@@ -46,22 +47,13 @@ export default function MandaMQTT() {
       console.log('New message: ' + payload.toString())
     })
   }, [])
+  
 
-    function handleClick(message) {
-        const client = mqtt.connect(host, options)
-        client.subscribe('WILL/teste')
-        return client.publish('WILL/teste', message)
-    }
 
-    return(
-        <div>
-            <button type='button' onClick={ () => handleClick('Frente')}>Frente</button>
-            <div>
-                <button type='button' onClick={ () => handleClick('Esquerda')}>Esquerda</button>
-                <button type='button' onClick={ () => handleClick('Direita')}>Direita</button>
-            </div>
-            <button type='button' onClick={ () => handleClick('Tras')}>Trás</button>
-        </div>
-    )
-
+  return (
+      <div>  
+        <h2>{messages && messages}</h2>
+      </div>
+ 
+  )
 }
